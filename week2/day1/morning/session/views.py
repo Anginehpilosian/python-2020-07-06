@@ -6,7 +6,7 @@ def index(request):
     print('Index function')
     # check if user is signed up
     if 'username' in request.session:
-      return redirect('/dashboard')
+        return redirect('/dashboard')
     # redirect to dashboard
     return render(request, 'index.html')
 
@@ -37,7 +37,8 @@ def dashboard(request):
         # redirect them to sign up page
     else:
         context = {
-            'user': request.session['username']
+            'user': request.session['username'],
+            'counter': request.session['counter'],
         }
         return render(request, 'dashboard.html', context)
 

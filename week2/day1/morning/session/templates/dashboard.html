@@ -7,8 +7,11 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Welcome {{ user }} to your dashboard!</h1>
+    <h1>Welcome {{ request.session.username }} to your dashboard!</h1>
     <h2>Session counter {{ request.session.counter }}</h2>
+
+    <h1>Welcome {{ user }} to your dashboard!</h1>
+    <h2>Session counter {{ counter }}</h2>
     <a href="/logout">Logout</a>
   </body>
 </html>
