@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Welcome to the shirt store!</h1>
+    <table>
+      <th>
+        <tr>
+          <th>ID</th>
+          <th>Color</th>
+          <th>Size</th>
+          <th>Material</th>
+          <th>Uploaded By</th>
+        </tr>
+      </th>
+      <tbody>
+        {% for shirt in shirtzzz %}
+        <tr>
+          <td>{{ shirt.id }}</td>
+          <td>{{ shirt.color }}</td>
+          <td>{{ shirt.size }}</td>
+          <td>{{ shirt.material }}</td>
+          <td>{{ shirt.upload_by.first_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
