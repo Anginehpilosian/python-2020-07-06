@@ -28,6 +28,7 @@ def sign_up(request):
 
     return redirect('/users')
 
+
 def shirts_create(request):
     print(request.POST)
     user_who_is_logged_in = User.objects.get(id=request.session['uid'])
@@ -40,6 +41,7 @@ def shirts_create(request):
     )
     print('uploaded_shirt: ', uploaded_shirt)
     return redirect('/shirts')
+
 
 def users(request):
     # get all the users
@@ -60,6 +62,7 @@ def shirts(request):
 def shirts_new(request):
     return render(request, 'shirts_new.html')
 
+
 def login(request):
     # read email/password
     # go to the DB to match email/password
@@ -67,3 +70,37 @@ def login(request):
     # redirect to some page
     # otherwise sign up
     pass
+
+
+def like(request, shirt_id):
+    # find the 2 ids that we need
+    # shirt id
+    # user id
+    just_user_id = request.session['uid']
+
+    # find the actual objects we are referring
+    instance_of_a_shirt = Shirt.objects.get(id=shirt_id)
+    instance_of_a_user = User.objects.get(id=just_user_id)
+
+    # add one to the other
+    instance_of_a_user.liked_shirts.add(instance_of_a_shirt)
+    # instance_of_a_shirt.users_who_liked.add(instance_of_a_user)
+
+    return redirect('/shirts')
+
+
+def unlike(request, shirt_id):
+    # find the 2 ids that we need
+    # shirt id
+    # user id
+    just_user_id = request.session['uid']
+
+    # find the actual objects we are referring
+    instance_of_a_shirt = Shirt.objects.get(id=shirt_id)
+    instance_of_a_user = User.objects.get(id=just_user_id)
+
+    # add one to the other
+    instance_of_a_user.liked_shirts.remove(instance_of_a_shirt)
+    # instance_of_a_shirt.users_who_liked.add(instance_of_a_user)
+
+    return redirect('/shirts')

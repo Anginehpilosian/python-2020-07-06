@@ -9,6 +9,7 @@ class Shirt(models.Model):
     material = models.CharField(max_length=45)
     upload_by = models.ForeignKey(
         "User", related_name="shirts", on_delete="cascade")
+    # users_who_liked = models.ManyToManyField(User, related_name="liked_shirts")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -20,6 +21,8 @@ class User(models.Model):
     email = models.CharField(max_length=45)
     social_security_number = models.CharField(max_length=45)
     password = models.CharField(max_length=45)
+    liked_shirts = models.ManyToManyField(
+        Shirt, related_name="users_who_liked")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
