@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ request.session.first_name }} {{ request.session.last_name }}'s Profile
+    </title>
+  </head>
+  <body>
+    <h1>
+      {{ request.session.first_name }} {{ request.session.last_name }}'s Profile
+    </h1>
+    <h1>{{ first_name }} {{ last_name }}'s Profile</h1>
+    <a href="/log_out">Log out</a>
+
+    <form action="/shirts/create" method="POST">
+      {% csrf_token %}
+      <p>
+        <label for="brand">Brand</label>
+        <input type="text" name="brand" />
+      </p>
+      <p>
+        <label for="size">Size</label>
+        <input type="text" name="size" />
+      </p>
+      <p>
+        <label for="color">Color</label>
+        <input type="text" name="color" />
+      </p>
+      <button type="submit">Create a shirt!</button>
+    </form>
+
+    <h3>All Shirts</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for shirt in all_shirtzzz %}
+        <tr>
+          <td>{{ shirt.brand }}</td>
+          <td>{{ shirt.size }}</td>
+          <td>{{ shirt.color }}</td>
+          <td>{{ shirt.owner.first_name }} {{ shirt.owner.last_name }}</td>
+        </tr>
+        {% endfor %}
+        <!--
+        <tr>
+          <td>Nike</td>
+          <td>M</td>
+          <td>Red</td>
+          <td>RyanM⌽⌽⍉⌽⍉</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+
+    <h3>My Shirtzzzz</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for shirt in my_shirtzzz %}
+        <tr>
+          <td>{{ shirt.brand }}</td>
+          <td>{{ shirt.size }}</td>
+          <td>{{ shirt.color }}</td>
+          <td>{{ shirt.owner.first_name }} {{ shirt.owner.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
