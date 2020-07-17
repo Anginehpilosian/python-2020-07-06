@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 
-from .models import Shirt, Student
+from .models import *
+from .models import Club, Shirt, Student
 
 
 # Create your views here.
@@ -40,9 +41,10 @@ def show_user_profile(request):
         "user_id": request.session["user_id"],
         "first_name": request.session["first_name"],
         "last_name": request.session["last_name"],
-        "all_shirtzzz" : Shirt.objects.all(),
+        "all_shirtzzz": Shirt.objects.all(),
         # "my_shirtzzz" : Shirt.objects.filter(owner=logged_in_student),
-        "my_shirtzzz" : logged_in_student.shirts.all(),
+        "my_shirtzzz": logged_in_student.shirts.all(),
+        "all_clubs": Club.objects.all(),
     }
     return render(request, 'profile.html', context)
 
@@ -54,6 +56,7 @@ def log_out(request):
 #     c = ClassName.objects.get(id=1)
 # c.delete()
 
+
 def create_a_shirt(request):
     print(request.POST)
     # Where is the owner from?
@@ -61,10 +64,33 @@ def create_a_shirt(request):
     logged_in_student = Student.objects.get(id=request.session["user_id"])
 
     Shirt.objects.create(
-      brand = request.POST['brand'],
-      size = request.POST['size'],
-      color = request.POST['color'],
-      owner = logged_in_student
+        brand=request.POST['brand'],
+        size=request.POST['size'],
+        color=request.POST['color'],
+        owner=logged_in_student
     )
+
+    return redirect("/my_profile")
+
+
+def create_a_club(request):
+    # get the student that is saved in session
+    logged_in_student = Student.objects.get(id=request.session["user_id"])
+
+    # create the club
+    created_club = Club.objects.create(name=request.POST['name'])
+    # add the student who created the club as a member
+    created_club.students.add(logged_in_student)
+
+    return redirect("/my_profile")
+
+
+def join_a_club(request, club_id):
+    # student
+    logged_in_student = Student.objects.get(id=request.session["user_id"])
+
+    # club
+    club_to_join = Club.objects.get(id=club_id)
+    club_to_join.students.add(logged_in_student)
 
     return redirect("/my_profile")

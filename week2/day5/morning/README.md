@@ -15,7 +15,7 @@
 - [⌽] One to Many
   - student -> tshirts
   - page ['shirts/create', 'shirts']
-- [ ] Many To Many
+- [x] Many To Many
   - students <-> clubs
   - create a club
   - pages ['clubs/create', 'clubs']

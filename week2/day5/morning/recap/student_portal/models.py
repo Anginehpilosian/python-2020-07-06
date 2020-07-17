@@ -7,6 +7,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     # shirts
+    # clubs
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -24,5 +25,6 @@ class Shirt(models.Model):
 class Club(models.Model):
     name = models.CharField(max_length=255)
     # more fields?
+    students = models.ManyToManyField(Student, related_name="clubs")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
