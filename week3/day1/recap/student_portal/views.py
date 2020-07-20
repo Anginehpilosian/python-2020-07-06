@@ -1,0 +1,115 @@
+from django.contrib import messages
+from django.shortcuts import redirect, render
+
+from .models import *
+from .models import Club, Shirt, Student
+
+
+# Create your views here.
+def index(request):
+    print('index function!')
+    return render(request, "index.html")
+
+
+def sign_up(request):
+    print('sign_up function!')
+    print(request.POST)
+    # do some stuff
+
+    errors = Student.objects.basic_validatorzzz(request.POST)
+    # check if the errors dictionary has anything in it
+    if len(errors) > 0:
+        # if the errors dictionary contains anything, loop through each key-value pair and make a flash message
+        for key, value in errors.items():
+            messages.error(request, value)
+        # redirect the user back to the form to fix the errors
+        return redirect('/')
+    else:
+        # create the user in the db
+        newStudent = Student.objects.create(
+            first_name=request.POST["first_name"],
+            last_name=request.POST["last_name"]
+        )
+        # session
+        request.session["user_id"] = newStudent.id
+        request.session["first_name"] = newStudent.first_name
+        request.session["last_name"] = newStudent.last_name
+
+        return redirect('/my_profile')
+
+
+def show_user_profile(request):
+    print('profile function!')
+    # if we don't have a student
+    # send them back to the signup page
+    if "user_id" not in request.session:
+        return redirect("/")
+
+    # get the user from the db using session user_id
+    logged_in_student = Student.objects.get(id=request.session["user_id"])
+    context = {
+        "user_id": request.session["user_id"],
+        "first_name": request.session["first_name"],
+        "last_name": request.session["last_name"],
+        "all_shirtzzz": Shirt.objects.all(),
+        # "my_shirtzzz" : Shirt.objects.filter(owner=logged_in_student),
+        "my_shirtzzz": logged_in_student.shirts.all(),
+        "all_clubs": Club.objects.all(),
+    }
+    return render(request, 'profile.html', context)
+
+
+def log_out(request):
+    request.session.clear()  # ??
+    # ...
+    return redirect('/')
+#     c = ClassName.objects.get(id=1)
+# c.delete()
+
+
+def create_a_shirt(request):
+    print(request.POST)
+    # Where is the owner from?
+
+    errors = Shirt.objects.validator(request.POST)
+    # check if the errors dictionary has anything in it
+    if len(errors) > 0:
+        # if the errors dictionary contains anything, loop through each key-value pair and make a flash message
+        for key, value in errors.items():
+            messages.error(request, value)
+        # redirect the user back to the form to fix the errors
+        return redirect('/my_profile')
+    else:
+        logged_in_student = Student.objects.get(id=request.session["user_id"])
+
+        Shirt.objects.create(
+            brand=request.POST['brand'],
+            size=request.POST['size'],
+            color=request.POST['color'],
+            owner=logged_in_student
+        )
+
+        return redirect("/my_profile")
+
+
+def create_a_club(request):
+    # get the student that is saved in session
+    logged_in_student = Student.objects.get(id=request.session["user_id"])
+
+    # create the club
+    created_club = Club.objects.create(name=request.POST['name'])
+    # add the student who created the club as a member
+    created_club.students.add(logged_in_student)
+
+    return redirect("/my_profile")
+
+
+def join_a_club(request, club_id):
+    # student
+    logged_in_student = Student.objects.get(id=request.session["user_id"])
+
+    # club
+    club_to_join = Club.objects.get(id=club_id)
+    club_to_join.students.add(logged_in_student)
+
+    return redirect("/my_profile")

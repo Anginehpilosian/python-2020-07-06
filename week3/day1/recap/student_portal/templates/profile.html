@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {{ request.session.first_name }} {{ request.session.last_name }}'s Profile
+    </title>
+  </head>
+  <body>
+    <h1>
+      {{ request.session.first_name }} {{ request.session.last_name }}'s Profile
+    </h1>
+    <h1>{{ first_name }} {{ last_name }}'s Profile</h1>
+    <a href="/log_out">Log out</a>
+
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <h3>Create a shirt</h3>
+    <form action="/shirts/create" method="POST">
+      {% csrf_token %}
+      <p>
+        <label for="brand">Brand</label>
+        <input type="text" name="brand" />
+      </p>
+      <p>
+        <label for="size">Size</label>
+        <!-- <select name="size">
+          <option value="xs">xs</option>
+          <option value="s">s</option>
+          <option value="m">m</option>
+          <option value="l">l</option>
+          <option value="xl">xl</option>
+        </select> -->
+        <input type="text" name="size">
+      </p>
+      <p>
+        <label for="color">Color</label>
+        <input type="text" name="color" />
+      </p>
+      <button type="submit">Create a shirt!</button>
+    </form>
+
+    <h3>All Shirts</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for shirt in all_shirtzzz %}
+        <tr>
+          <td>{{ shirt.brand }}</td>
+          <td>{{ shirt.size }}</td>
+          <td>{{ shirt.color }}</td>
+          <td>{{ shirt.owner.first_name }} {{ shirt.owner.last_name }}</td>
+        </tr>
+        {% endfor %}
+        <!--
+        <tr>
+          <td>Nike</td>
+          <td>M</td>
+          <td>Red</td>
+          <td>RyanM⌽⌽⍉⌽⍉</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+
+    <h3>My Shirtzzzz</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Size</th>
+          <th>Color</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for shirt in my_shirtzzz %}
+        <tr>
+          <td>{{ shirt.brand }}</td>
+          <td>{{ shirt.size }}</td>
+          <td>{{ shirt.color }}</td>
+          <td>{{ shirt.owner.first_name }} {{ shirt.owner.last_name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+
+  <h3>Create a club</h3>
+  <form action="/clubs/create" method="POST">
+    {% csrf_token %}
+    <p>
+      <label for="name">Name of the club</label>
+      <input type="text" name="name" />
+    </p>
+    <button type="submit">Create a club!</button>
+  </form>
+
+  <h3>All Clubs</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Members</th>
+        <th>Join</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for club in all_clubs %}
+      <tr>
+        <td>{{ club.name }}</td>
+        <td>
+          {% for student in club.students.all %}
+            {{ student.first_name }} {{ student.last_name }}
+          {% endfor %}
+        </td>
+        <td><a href="/clubs/{{ club.id }}/join">Join</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
