@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+        {{ message }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Login -->
+    <h1>Welcome Wagon!</h1>
+    <fieldset>
+      <legend>Login</legend>
+      <form action="/login" method="post">
+        {% csrf_token %}
+        <p>
+          <label for="email">email</label>
+          <input type="email" name="email" />
+        </p>
+        <p>
+          <label for="password">password</label>
+          <input type="text" name="password" />
+        </p>
+        <button type="submit">Login</button>
+      </form>
+    </fieldset>
+
+    <!-- Registration -->
+    <fieldset>
+      <legend>Register</legend>
+      <form action="/register" method="post">
+        {% csrf_token %}
+        <p>
+          <label for="username">username</label>
+          <input type="text" name="username" />
+        </p>
+        <p>
+          <label for="email">email</label>
+          <input type="email" name="email" />
+        </p>
+        <p>
+          <label for="password">password</label>
+          <input type="text" name="password" />
+        </p>
+        <p>
+          <label for="password_confirm">password_confirm</label>
+          <input type="text" name="password_confirm" />
+        </p>
+        <button type="submit">Register</button>
+      </form>
+    </fieldset>
+  </body>
+</html>
