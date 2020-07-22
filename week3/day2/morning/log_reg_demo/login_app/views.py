@@ -15,11 +15,13 @@ def register_user(request):
     print(request.POST)
     # validate the post data
     errors = User.objects.register_validator(request.POST)
+    print(errors)
     # check if the errors dictionary has anything in it
     if len(errors) > 0:
+        print('we made it in the if block so we have errors')
         # if the errors dictionary contains anything, loop through each key-value pair and make a flash message
         for key, value in errors.items():
-            messages.error(request, value)
+            messages.error(request, value, key)
         # redirect the user back to the form to fix the errors
         return redirect('/')
     else:
@@ -28,6 +30,7 @@ def register_user(request):
         hash_browns = bcrypt.hashpw(
             request.POST['password'].encode(), bcrypt.gensalt()).decode()
         print('hash_browns: ', hash_browns)
+
         # create a user
         freshly_created_user = User.objects.create(
             username=request.POST['username'],
@@ -42,6 +45,9 @@ def register_user(request):
 
 
 def view_account(request):
+    # retrieve info from db about logged in user
+    # READ queries
+    # load data through context
     return render(request, 'account.html')
 
 
@@ -52,6 +58,7 @@ def logout_session(request):
 
 def login_user(request):
     print(request.POST)
+
     # check the db for an email match
     user_with_matching_email = User.objects.filter(
         email=request.POST['email']).first()
