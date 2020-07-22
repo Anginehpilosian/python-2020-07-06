@@ -13,8 +13,10 @@ converted_date_time = datetime.strptime(date_from_form, "%Y-%m-%d").timestamp()
 print('converted_date_time: ', converted_date_time)
 
 is_future_date = time_now - converted_date_time
+# is_future_date = converted_date_time - time_now
 
 # check if it is a future date
+print('is_future_date: ', is_future_date)
 if is_future_date < 0:
     print('future date')
 else:
