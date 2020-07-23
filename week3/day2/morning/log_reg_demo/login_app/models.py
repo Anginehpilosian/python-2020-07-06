@@ -36,6 +36,7 @@ class UserManager(models.Manager):
         # if we found a user
             # check if their password is the same
             # if it is the same
+                # add id to session
                 # redirect them to the account page
             # else
                 # redirect them to loging page to view errors
