@@ -1,6 +1,6 @@
 # Python Exam Day
 
-Exam code ``
+Exam code `b1200400`
 
 ## Scoring
 
